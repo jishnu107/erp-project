@@ -1,0 +1,91 @@
+{% extends 'teamleaders/home.html' %}
+{% load static %}
+{% block content %}
+<div class="container pt-5 pb-5">
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6 m-auto">
+            <div class="card shadow border">
+                <div class="card-body">
+                    <h3>PROFILE UPDATE</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Name</label>
+                        <input type="text" name="e_name" class="form-control" id="exampleFormControlInput1" placeholder="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                        <input type="email" name="e_email" class="form-control" id="email" placeholder="name@example.com">
+                        <span id="email_error"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Adress</label>
+                        <textarea class="form-control" name="e_address" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Phonenumber</label>
+                        <input type="number" name="e_number" class="form-control" id="exampleFormControlInput1" placeholder="ph.no">
+                    </div>
+                    Gender <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="male">
+                        <label class="form-check-label" for="inlineRadio1">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="female">
+                        <label class="form-check-label" for="inlineRadio2">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="other                                       ">
+                        <label class="form-check-label" for="inlineRadio3">Other</label>
+                        </div>
+                        <p style="color: green;">{{msg1}}</p><span style="color: red;">{{msg}}</span><br>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>        
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+<script>
+    $('#email').change(function(){
+        $.ajaxSetup({  
+        headers: {
+          "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val() 
+        }
+    })
+
+        $.ajax({
+
+            url:'{% url "teamleaders:mail_exist" %}',
+            type:'POST',
+            
+            data:{
+                email:$(this).val()
+            },
+            success:function(response){
+                var email_error = $('#email_error')
+                var email = $('#email')
+
+
+                if(response.status == true){
+                    $('#email_error').html('Email already exist').css('color','red')
+                    $('#email').css('border','2px solid red')
+                }
+                else{
+                    $('#email_error').html('Success').css('color','green')
+                    $('#email').css('border','2px solid green')
+
+
+                }
+
+                console.log(response.status)
+            }
+
+        })
+
+    })
+
+</script>
+    {% endblock %}

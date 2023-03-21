@@ -1,0 +1,79 @@
+{% extends 'teamleaders/home.html' %}
+{% load static %}
+{% block content %}
+    <div class="container pt-5 pb-5">
+        <div class="row">
+            <div class="col-12 col-sm-8 col-md-6 m-auto">
+                <div class="card shadow border">
+                    <div class="card-body">
+                        <h3>ADD TASK</h3>
+                        <form method="POST">
+                            {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Task</label>
+                            <input type="text" name='taskname' class="form-control" id="task" placeholder="name">
+                            <span id="task_error"></span>
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-select" name='members' aria-label="Default select example">
+                                <option selected>Select Member</option>
+                                {% for emp in employes %}
+                                <option value="{{emp.employe.id}}">{{emp.employe.employe_name}}</option>
+                                {% endfor %}
+                              </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Epected Date</label>
+                            <input type="date" name='date' class="form-control" id="exampleFormControlInput1" placeholder="name">
+                        </div>
+                        <p style="color: green;">{{msg}}</p>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                        </form>
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script>
+        $('#task').change(function(){
+            $.ajaxSetup({  
+            headers: {
+              "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val() 
+            }
+        })
+
+            $.ajax({
+
+                url:'{% url "teamleaders:task_exist" %}',
+                type:'POST',
+                
+                data:{
+                    name:$(this).val()
+                },
+                success:function(response){
+                    var task_error = $('#proj_error')
+                    var name = $('#proj')
+
+
+                    if(response.status == true){
+                        $('#task_error').html('Task Already Given').css('color','red')
+                        $('#task').css('border','2px solid red')
+                    }
+                    else{
+                        $('#task_error').html('Success').css('color','green')
+                        $('#task').css('border','2px solid green')
+
+
+                    }
+
+                    console.log(response.status)
+                }
+
+            })
+
+        })
+
+    </script>
+    {% endblock %}

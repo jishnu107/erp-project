@@ -1,0 +1,64 @@
+{% extends 'companyadmin/home.html' %}
+{% load static %}
+{% block content %}
+    <div class="container pt-5 pb-5">
+        <div class="row">
+            <div class="col-12 col-sm-8 col-md-6 m-auto">
+                <div class="card shadow border">
+                    <div class="card-body">
+                        <h3>ADD MEMBERS</h3>
+                        <form method="POST">
+                            {% csrf_token %}
+                        <div class="mb-3">
+                            <select class="form-select" name='proj' id='productno' aria-label="Default select example">
+                                <option selected>Select Project</option>
+                                {% for proj in project %}
+                                <option value="{{proj.id}}">{{proj.project_name}}</option>
+                                {% endfor %}
+                              </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Team Leader</label>
+                            <input type="text" readonly name="c_name" class="form-control" id="leader" placeholder="name">
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-select" name='memb' aria-label="Default select example">
+                                <option selected>Select Members</option>
+                                {% for emp in employes %}
+                                <option value="{{emp.id}}">{{emp.employe_name}}</option>
+                                {% endfor %}
+                              </select>
+                        </div>
+                        <p>{{msg}}<p>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        </form>
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $('#productno').change(function(){
+            $.ajaxSetup({  
+            headers: {
+              "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()
+            }
+        })
+        
+            $.ajax({
+                url:'{% url "companyadmin:getleader" %}', 
+                type:'POST', 
+                data:{
+                    id:$(this).val() 
+                },
+                success:function(response){
+                    $('#leader').val(response.leader)
+        
+                }
+            })
+        
+        })
+        
+        </script>
+    {% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'teamleaders/home.html' %}
+{% load static %}
+    {% block content %}
+    <div class="text-center p-4">
+      {%if employes%}
+      <h1>VIEW EMPLOYEE</h1>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12">
+          <table class="table table-dark table-striped text-center  border shadow">
+            <thead>
+              <th>Employe Name</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Phone Number</th>
+              <th>Gender</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              {% for emp in employes %}
+              <tr>
+                <td>{{emp.employe.employe_name}}</td>
+                <td>{{emp.employe.email_address}}</td>
+                <td>{{emp.employe.address}}</td>
+                <td>{{emp.employe.phone_number}}</td>
+                <td>{{emp.employe.gender}}</td>
+                <td>
+                    <button type="button" class="btn btn-danger">
+                        <a href="{% url 'teamleaders:deleteemp' emp.employe.id %}" style="color: aliceblue;text-decoration: none;">REMOVE</a>
+                    </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <div class="cart1 text-center">
+            <h1>NO EMPLOYES</h1>
+          </div>
+          
+            {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+    

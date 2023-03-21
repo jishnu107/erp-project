@@ -1,0 +1,44 @@
+{% extends 'members/mhome.html' %}
+{% load static %}
+{% block content %}
+<div class="text-center p-4">
+  {%if tasks%}
+    <h1>TASK DETAILS</h1>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-dark table-striped text-center  border shadow">
+          <thead>
+            <th>Task Name</th>
+            <th>Expected Date</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+            {% for task in tasks %}
+            <tr>
+              <td>{{task.task_name}}</td>
+              <td>{{task.expected_date}}</td>
+              <td>
+                  {% if not task.status %}
+                  <button type="button" class="btn btn-danger">
+                      <a href="{% url 'members:task_com' task.id %}" style="color: aliceblue;text-decoration: none;">COMPLETE</a>
+                  </button>
+                  {% else %}
+                  <p style="color: gray;"><b>COMPLETED</b></p>
+                  {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="cart1 text-center">
+          <h1>NO TASKS</h1>
+        </div>
+        
+          {% endif %}
+      </div>
+    </div>
+  </div>
+    {% endblock %}
