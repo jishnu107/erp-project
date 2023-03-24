@@ -1,73 +1,76 @@
 {% extends 'companyadmin/home.html' %}
 {% load static %}
 {% block content %}
-    <div class="container pt-5 pb-5">
-        <div class="row">
-            <div class="col-12 col-sm-8 col-md-6 m-auto">
-                <div class="card shadow border">
-                    <div class="card-body">
-                        <h3>ADD PROJECT</h3>
-                        <form method="POST">
-                            {% csrf_token %}
+<div class="container pt-5 pb-5">
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6 m-auto">
+            <div class="card shadow border">
+                <div class="card-body">
+                    <h3>ADD PROJECT</h3>
+                    <form method="POST">
+                        {% csrf_token %}
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Project Name</label>
-                            <input type="text" name="p_name" class="form-control" id="proj" placeholder="name">
+                            <input type="text" required name="p_name" class="form-control" id="proj" placeholder="name">
                             <span id="proj_error" style="color: red;"></span>
                         </div>
                         <div class="mb-3">
                             <select class="form-select" name='t_lead' aria-label="Default select example">
-                                <option selected>Select Team Leader</option>
+                                <option selected disabled>Select Team Leader</option>
                                 {% for emp in employes %}
                                 <option value="{{emp.id}}">{{emp.employe_name}}</option>
                                 {% endfor %}
-                              </select>
+                            </select>
                         </div>
+                        {% if messages %}
+                        {% for message in messages %}
+                        <p{% if message.tags %} class="{{ message.tags }}" {% endif %} style="color: green;">{{ message}}</p>
+                        {% endfor %}
+                        {% endif %}
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>        
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        $('#proj').change(function(){
-            $.ajaxSetup({  
+</div>
+<script>
+    $('#proj').change(function () {
+        $.ajaxSetup({
             headers: {
-              "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val() 
+                "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()
             }
         })
 
-            $.ajax({
+        $.ajax({
 
-                url:'{% url "companyadmin:proj_exist" %}',
-                type:'POST',
-                
-                data:{
-                    name:$(this).val()
-                },
-                success:function(response){
-                    var proj_error = $('#proj_error')
-                    var name = $('#proj')
+            url: '{% url "companyadmin:proj_exist" %}',
+            type: 'POST',
 
-
-                    if(response.status == true){
-                        $('#proj_error').html('Project already exist').css('color','red')
-                        $('#proj').css('border','2px solid red')
-                    }
-                    else{
-                        $('#proj_error').html('Success').css('color','green')
-                        $('#proj').css('border','2px solid green')
+            data: {
+                name: $(this).val()
+            },
+            success: function (response) {
+                var proj_error = $('#proj_error')
+                var name = $('#proj')
 
 
-                    }
+                if (response.status == true) {
+                    $('#proj_error').html('Project already exist').css('color', 'red')
+                    $('#proj').css('border', '2px solid red')
+                }
+                else {
+                    $('#proj_error').html('Success').css('color', 'green')
+                    $('#proj').css('border', '2px solid green')
 
-                    console.log(response.status)
+
                 }
 
-            })
+                console.log(response.status)
+            }
 
         })
 
-    </script>
-    {% endblock %}
-    
+    })
+</script>
+{% endblock %}

@@ -11,7 +11,7 @@
                             {% csrf_token %}
                         <div class="mb-3">
                             <select class="form-select" name='proj' id='productno' aria-label="Default select example">
-                                <option selected>Select Project</option>
+                                <option selected disabled>Select Project</option>
                                 {% for proj in project %}
                                 <option value="{{proj.id}}">{{proj.project_name}}</option>
                                 {% endfor %}
@@ -19,17 +19,19 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Team Leader</label>
-                            <input type="text" readonly name="c_name" class="form-control" id="leader" placeholder="name">
+                            <input type="text" name="c_name" class="form-control" id="leader" placeholder="name">
                         </div>
                         <div class="mb-3">
-                            <select class="form-select" name='memb' aria-label="Default select example">
-                                <option selected>Select Members</option>
+                            <select class="form-select" name='memb'id='member' aria-label="Default select example">
+                                <option selected disabled>Select Members</option>
                                 {% for emp in employes %}
                                 <option value="{{emp.id}}">{{emp.employe_name}}</option>
                                 {% endfor %}
                               </select>
                         </div>
-                        <p>{{msg}}<p>
+                        <p id='memb_error' style="color: red;">{{msg}}
+                            <span style="color: green;">{{msg1}}</span>
+                            <p>
                         <button type="submit" class="btn btn-primary">Add</button>
                         </form>
                     </div>        
@@ -54,6 +56,42 @@
                 },
                 success:function(response){
                     $('#leader').val(response.leader)
+        
+                }
+            })
+        
+        })
+
+        $('#member').change(function(){
+            $.ajaxSetup({  
+            headers: {
+              "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()
+            }
+        })
+        
+            $.ajax({
+                url:'{% url "companyadmin:memb_exist" %}', 
+                type:'POST', 
+                data:{
+                    member:$(this).val() 
+                },
+                success:function(response){
+                    var memb_error = $('#memb_error')
+                    var member = $('#member')
+
+
+                    if(response.status == true){
+                        $('#memb_error').html('This employee is already assigned to a project').css('color','red')
+                        $('#member').css('border','2px solid red')
+                    }
+                    else{
+                        $('#memb_error').html('Success').css('color','green')
+                        $('#member').css('border','2px solid green')
+
+
+                    }
+
+                    console.log(response.status)
         
                 }
             })

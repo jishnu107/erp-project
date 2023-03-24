@@ -34,35 +34,35 @@
                             {% csrf_token %}
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Name</label>
-                            <input type="text" name="e_name" class="form-control" id="exampleFormControlInput1" placeholder="name">
+                            <input type="text" required name="e_name" class="form-control" id="exampleFormControlInput1" placeholder="name">
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                            <input type="email" name="e_email" class="form-control" id="email" placeholder="name@example.com">
-                            <span id="email_error" style="color: red;">{{msg}}</span>
+                            <input type="email" required name="e_email" class="form-control" id="email" placeholder="name@example.com">
+                            <span id="email_error"></span>
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlTextarea1" class="form-label">Adress</label>
-                            <textarea class="form-control" name="e_address" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" required name="e_address" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Phonenumber</label>
-                            <input type="number" name="e_number" class="form-control" id="exampleFormControlInput1" placeholder="ph.no">
+                            <input type="number" required name="e_number" class="form-control" id="exampleFormControlInput1" placeholder="ph.no">
                         </div>
                         Gender <br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="male">
+                            <input class="form-check-input" required name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="male">
                             <label class="form-check-label" for="inlineRadio1">Male</label>
                             </div>
                             <div class="form-check form-check-inline">
-                            <input class="form-check-input" name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="female">
+                            <input class="form-check-input" required name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="female">
                             <label class="form-check-label" for="inlineRadio2">Female</label>
                             </div>
                             <div class="form-check form-check-inline">
-                            <input class="form-check-input" name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="other                                       ">
+                            <input class="form-check-input" required name="e_gender" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="other                                       ">
                             <label class="form-check-label" for="inlineRadio3">Other</label>
-                            </div>
-                            <br>
+                            </div><br>
+                            <p style="color: green;">{{msg}}</p>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>        

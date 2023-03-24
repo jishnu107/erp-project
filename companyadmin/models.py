@@ -1,6 +1,9 @@
 from django.db import models
 
 # Create your models here.
+class CompAdmin(models.Model):
+    email_address = models.CharField(max_length=30)
+    password =  models.CharField(max_length=30)
 class Employe(models.Model):
     employe_name = models.CharField(max_length=20)
     email_address = models.CharField(max_length=30)

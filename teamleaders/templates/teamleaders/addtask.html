@@ -11,12 +11,12 @@
                             {% csrf_token %}
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Task</label>
-                            <input type="text" name='taskname' class="form-control" id="task" placeholder="name">
+                            <input type="text" required name='taskname' class="form-control" id="task" placeholder="name">
                             <span id="task_error"></span>
                         </div>
                         <div class="mb-3">
-                            <select class="form-select" name='members' aria-label="Default select example">
-                                <option selected>Select Member</option>
+                            <select class="form-select" required name='members' aria-label="Default select example">
+                                <option selected disabled>Select Member</option>
                                 {% for emp in employes %}
                                 <option value="{{emp.employe.id}}">{{emp.employe.employe_name}}</option>
                                 {% endfor %}
@@ -24,7 +24,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Epected Date</label>
-                            <input type="date" name='date' class="form-control" id="exampleFormControlInput1" placeholder="name">
+                            <input type="date" required name='date' class="form-control" id="exampleFormControlInput1" placeholder="name">
                         </div>
                         <p style="color: green;">{{msg}}</p>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -35,45 +35,4 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script>
-        $('#task').change(function(){
-            $.ajaxSetup({  
-            headers: {
-              "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val() 
-            }
-        })
-
-            $.ajax({
-
-                url:'{% url "teamleaders:task_exist" %}',
-                type:'POST',
-                
-                data:{
-                    name:$(this).val()
-                },
-                success:function(response){
-                    var task_error = $('#proj_error')
-                    var name = $('#proj')
-
-
-                    if(response.status == true){
-                        $('#task_error').html('Task Already Given').css('color','red')
-                        $('#task').css('border','2px solid red')
-                    }
-                    else{
-                        $('#task_error').html('Success').css('color','green')
-                        $('#task').css('border','2px solid green')
-
-
-                    }
-
-                    console.log(response.status)
-                }
-
-            })
-
-        })
-
-    </script>
     {% endblock %}
