@@ -9,4 +9,5 @@ urlpatterns = [
     path('pass', views.pass_page, name='pass'),
     path('task_com/<int:tid>', views.task_com, name='task_com'),
     path('logoutemp', views.logout_emp, name='logoutemp'),
+    path('mail_exist', views.mail_exist, name='mail_exist'),
 ]

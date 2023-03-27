@@ -47,4 +47,45 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+<script>
+    $('#email').change(function(){
+        $.ajaxSetup({  
+        headers: {
+          "X-CSRFToken": $('[name=csrfmiddlewaretoken]').val() 
+        }
+    })
+
+        $.ajax({
+
+            url:'{% url "members:mail_exist" %}',
+            type:'POST',
+            
+            data:{
+                email:$(this).val()
+            },
+            success:function(response){
+                var email_error = $('#email_error')
+                var email = $('#email')
+
+
+                if(response.status == true){
+                    $('#email_error').html('Email already exist').css('color','red')
+                    $('#email').css('border','2px solid red')
+                }
+                else{
+                    $('#email_error').html('Success').css('color','green')
+                    $('#email').css('border','2px solid green')
+
+
+                }
+
+                console.log(response.status)
+            }
+
+        })
+
+    })
+
+</script>
     {% endblock %}
